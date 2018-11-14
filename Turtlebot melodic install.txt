@@ -1,4 +1,4 @@
-sudo apt install ros-melodic-ecl ros-melodic-joy ros-melodic-ar-track-alvar ros-melodic-base-local-planner ros-melodic-move-base-msgs ros-melodic-kobuki-core ros-melodic-kobuki-msgs ros-melodic-yocs-msgs
+sudo apt install ros-melodic-desktop-full ros-melodic-ecl ros-melodic-joy ros-melodic-ar-track-alvar ros-melodic-base-local-planner ros-melodic-move-base-msgs ros-melodic-kobuki-core ros-melodic-kobuki-msgs ros-melodic-yocs-msgs
 wstool init src https://raw.githubusercontent.com/fadeto404/turtlebot/kinetic/turtlebot.rosinstall
 wstool merge -t src https://raw.githubusercontent.com/turtlebot/turtlebot_simulator/indigo/turtlebot_simulator.rosinstall
 catkin_make
