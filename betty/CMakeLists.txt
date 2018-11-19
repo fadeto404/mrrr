@@ -6,6 +6,7 @@ find_package(catkin REQUIRED COMPONENTS
   genmsg
   actionlib_msgs
   actionlib
+  tf2_ros
 )
 
 catkin_package()
@@ -31,5 +32,20 @@ target_link_libraries(ps3_teleop
 
 add_executable(dj src/dj.cpp)
 target_link_libraries(dj
+  ${catkin_LIBRARIES}
+)
+
+add_executable(busroute src/busroute.cpp)
+target_link_libraries(busroute
+  ${catkin_LIBRARIES}
+)
+
+add_executable(salesman src/salesman.cpp)
+target_link_libraries(salesman
+  ${catkin_LIBRARIES}
+)
+
+add_executable(pure_pursuit src/pure_pursuit.cpp)
+target_link_libraries(pure_pursuit
   ${catkin_LIBRARIES}
 )

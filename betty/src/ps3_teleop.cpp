@@ -175,7 +175,10 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg)
   for (size_t i = 0; i < sizeof(joyMsg->buttons)/sizeof(joyMsg->buttons[0]); i++) {
     button[i] = joyMsg->buttons[i];
   }
-  if(button[0])
-    playMusic(1);
-
+  //Four buttons for sound effects
+  for (size_t i = 0; i < 4; i++)
+  {
+    if(button[i])
+      playMusic(i+1);
+  }
 }
