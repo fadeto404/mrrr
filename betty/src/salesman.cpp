@@ -1,3 +1,9 @@
+/*
+  Edited version of Karl's busroute code.
+  Allows to set up to 10 points, which the turtlebot will drive between
+  Requires Gmapping to be running
+*/
+
 #include <algorithm>
 #include <ros/ros.h>
 #include <std_msgs/Int16.h>

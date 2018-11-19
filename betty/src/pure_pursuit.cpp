@@ -2,6 +2,8 @@
 //
 // Copyright (c) 2018 Karl D. Hansen
 // MIT License - see LICENSE file.
+//Requires Gmapping to be running
+// DOES NOT WORK AS INTENDED - BAD (very bad) BEHAVOIR WHEN USED ON TURTLEBOT
 
 #include <ros/ros.h>
 #include <tf2_ros/transform_listener.h>

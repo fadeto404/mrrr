@@ -1,3 +1,9 @@
+/*
+  Node to provide teleop of turtlebot with a ps3 controller.
+  includes reactions to bumper and cliff sensors
+  Allows for both sounds on the bot, and music on the bot-PC to be played
+  Music requires DJ node to be running on the bot-PC
+*/
 #include <iostream>
 #include "ros/ros.h"
 #include "geometry_msgs/Twist.h"
@@ -20,12 +26,12 @@ ros::Subscriber cliff_sub; //Cliff
 geometry_msgs::Twist velMsg;
 kobuki_msgs::Sound soundMsg;
 
+//Current speed of robot, 0
+float linSpeed = 0;
+float angSpeed = 0;
 
-//Global variables, make these to parameters instead!
-float linSpeedMult = 1;
-float angSpeedMult = 1;
-float linSpeed = 0.2;
-float angSpeed = 1;
+//used for adjusting speed, using ROS parameters. Acts as a multiplier (See the go-function)
+float linSpeedMult, angSpeedMult;
 
 //Axes of controller
 float axes[6];
@@ -33,7 +39,7 @@ float axes[6];
 uint8_t button[16];
 uint8_t backUpTime = 1;
 
-
+//Prototype functions, defined below main
 void go(float linX, float angZ, float s);
 void playSound(int sound);
 void playMusic(int choice);
@@ -43,10 +49,13 @@ void cliff_callback(const kobuki_msgs::CliffEvent::ConstPtr& cliffMsg);
 
 
 int main(int argc, char *argv[]) {
-  std::cout << "main, init" << std::endl;
 
+  //Basic initialization of ROS, node_name = "ps3_teleop"
+  std::cout << "main, init" << std::endl;
   ros::init(argc, argv, "ps3_teleop");
   ros::NodeHandle nh;
+
+  //Butt-load of publishers and subscribers:
   sound_pub = nh.advertise<kobuki_msgs::Sound>("/mobile_base/commands/sound", 1);
   cmd_vel_pub = nh.advertise<geometry_msgs::Twist>("/mobile_base/commands/velocity", 1);
   music_pub = nh.advertise<std_msgs::Int16>("/music",  2);
@@ -54,6 +63,8 @@ int main(int argc, char *argv[]) {
   bump_sub = nh.subscribe("/mobile_base/events/bumper", 1, bumper_callback);
   cliff_sub = nh.subscribe("/mobile_base/events/cliff", 5, cliff_callback);
 
+  //Checking if speedMult parameters exist, for linear and angular.
+  //If not, set them to default values
   if(nh.hasParam("linSpeedMult"))
     nh.getParam("linSpeedMult", linSpeedMult);
   else
@@ -168,8 +179,12 @@ bool buttonXOR(int a)
   bool output = true;
   for(int i = 0; i < sizeof(button)/sizeof(button[0]); i++)
   {
-      if(button[i] == true && button[i] != a)
-        output = false;
+      if(i != a)
+        if(button[i] == true)
+          output = false;
+      if(i == a)
+        if(button[i] != true)
+          output = false;
   }
   return output;
 }
@@ -179,16 +194,19 @@ bool buttonXOR(int a, int b)
   bool output = true;
   for(int i = 0; i < sizeof(button)/sizeof(button[0]); i++)
   {
-    if(i != a && i != b)
-      if(button[i] == true)
-        output = false;
+      if(i != a && i != b)
+        if(button[i] == true)
+          output = false;
+      if(i == a || i == b)
+        if(button[i] != true)
+          output = false;
   }
   return output;
 }
 
 void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg)
 {
-  //Save Axes info
+  //Retrieve Axes:
   for (size_t i = 0; i < sizeof(joyMsg->axes)/sizeof(joyMsg->axes[0]); i++) {
     axes[i] = joyMsg->axes[i];
   }
@@ -201,7 +219,11 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg)
   //Four buttons for sound effects
   for (size_t i = 0; i < 4; i++)
   {
-    if(buttonXOR(button[i]))
-      playMusic(i+1);
+    std::cout << "sound: " << i;
+    if(buttonXOR(i))
+    {
+      playMusic(i+1); //Music values from 1-4, as such, i+1 is used, as i is 0-3
+      std::cout << " is playing!" << std::endl;
+    }
   }
 }

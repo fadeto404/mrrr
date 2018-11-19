@@ -1,3 +1,11 @@
+/*
+  DJ Node
+  Listens for a basic int on the /music topic
+  Plays music when correct data is recieved.
+  More songs can be added, be exact with file location,
+  spaces not allowed in file names.
+*/
+
 #include "ros/ros.h"
 #include <iostream>
 #include "std_msgs/Int16.h"
@@ -11,7 +19,7 @@ int main(int argc, char *argv[]) {
   ros::Duration(1.0).sleep();
   std::cout << "Done with setup, waiting for music request" << std::endl;
 
-  ros::Rate r(1);
+  ros::Rate r(5);
   while (ros::ok())
   {
     ros::spinOnce();
@@ -32,24 +40,24 @@ void music_callback(const std_msgs::Int16::ConstPtr& choice)
   if (choice->data == 2)
   {
     std::cout << "playing music 2!" << std::endl;
-    system("cvlc --play-and-exit /home/c2-19/ros_ws/src/betty/sounds/I'll be back.mp3");
+    system("cvlc --play-and-exit /home/c2-19/ros_ws/src/betty/sounds/Illbeback.mp3");
     bool played = true;
   }
   if (choice->data == 3)
   {
     std::cout << "playing music 3!" << std::endl;
-    system("cvlc --play-and-exit /home/c2-19/ros_ws/src/betty/sounds/Shut up and take my money!.mp3");
+    system("cvlc --play-and-exit /home/c2-19/ros_ws/src/betty/sounds/Shutupandtakemymoney!.mp3");
     bool played = true;
   }
   if (choice->data == 4)
   {
     std::cout << "playing music 4!" << std::endl;
-    system("cvlc --play-and-exit /home/c2-19/ros_ws/src/betty/sounds/This is Sparta.mp3");
+    system("cvlc --play-and-exit /home/c2-19/ros_ws/src/betty/sounds/ThisisSparta.mp3");
     bool played = true;
   }
 
   if(!played)
   {
-    std::cout << "Couldn't play sang: " << choice->data << ", maybe a wrong reference was used?" << std::endl;
+    std::cout << "Couldn't play song: " << choice->data << ", maybe a wrong reference was used?" << std::endl;
   }
 }
