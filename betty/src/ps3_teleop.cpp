@@ -163,6 +163,28 @@ void cliff_callback(const kobuki_msgs::CliffEvent::ConstPtr& cliffMsg)
   }
 }
 
+bool buttonXOR(int a)
+{
+  bool output = true;
+  for(int i = 0; i < sizeof(button)/sizeof(button[0]); i++)
+  {
+      if(button[i] == true && button[i] != a)
+        output = false;
+  }
+  return output;
+}
+
+bool buttonXOR(int a, int b)
+{
+  bool output = true;
+  for(int i = 0; i < sizeof(button)/sizeof(button[0]); i++)
+  {
+    if(i != a && i != b)
+      if(button[i] == true)
+        output = false;
+  }
+  return output;
+}
 
 void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg)
 {
@@ -175,10 +197,11 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg)
   for (size_t i = 0; i < sizeof(joyMsg->buttons)/sizeof(joyMsg->buttons[0]); i++) {
     button[i] = joyMsg->buttons[i];
   }
+
   //Four buttons for sound effects
   for (size_t i = 0; i < 4; i++)
   {
-    if(button[i])
+    if(buttonXOR(button[i]))
       playMusic(i+1);
   }
 }
