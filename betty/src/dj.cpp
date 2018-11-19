@@ -29,6 +29,24 @@ void music_callback(const std_msgs::Int16::ConstPtr& choice)
     system("cvlc --play-and-exit /home/c2-19/ros_ws/src/betty/sounds/SurpriseMotherFcker.mp3");
     bool played = true;
   }
+  if (choice->data == 2)
+  {
+    std::cout << "playing music 2!" << std::endl;
+    system("cvlc --play-and-exit /home/c2-19/ros_ws/src/betty/sounds/I'll be back.mp3");
+    bool played = true;
+  }
+  if (choice->data == 3)
+  {
+    std::cout << "playing music 3!" << std::endl;
+    system("cvlc --play-and-exit /home/c2-19/ros_ws/src/betty/sounds/Shut up and take my money!.mp3");
+    bool played = true;
+  }
+  if (choice->data == 4)
+  {
+    std::cout << "playing music 4!" << std::endl;
+    system("cvlc --play-and-exit /home/c2-19/ros_ws/src/betty/sounds/This is Sparta.mp3");
+    bool played = true;
+  }
 
   if(!played)
   {
