@@ -2,6 +2,7 @@
   Edited version of Karl's busroute code.
   Allows to set up to 10 points, which the turtlebot will drive between
   Requires Gmapping to be running
+  Only provided as example code of exercises. Not going to be used for our project
 */
 
 #include <algorithm>
