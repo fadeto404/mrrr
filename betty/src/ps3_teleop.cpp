@@ -174,16 +174,41 @@ void cliff_callback(const kobuki_msgs::CliffEvent::ConstPtr& cliffMsg)
   }
 }
 
+void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg)
+{
+  //Retrieve Axes:
+  for (size_t i = 0; i < sizeof(joyMsg->axes)/sizeof(joyMsg->axes[0]); i++) {
+    axes[i] = joyMsg->axes[i];
+  }
+
+  //Retrieve Buttons:
+  for (size_t i = 0; i < sizeof(joyMsg->buttons)/sizeof(joyMsg->buttons[0]); i++) {
+    button[i] = joyMsg->buttons[i];
+  }
+
+  //Four buttons for sound effects
+  for (size_t i = 0; i < 4; i++)
+  {
+    if(button[i])
+    {
+      playMusic(i+1); //Music values from 1-4, as such, i+1 is used, as i is 0-3
+      std::cout << "sound: " << i << " is playing!" << std::endl;
+    }
+  }
+}
+
+
+//Following two functions are prototypes, and not used currently
 bool buttonXOR(int a)
 {
   bool output = true;
-  for(int i = 0; i < sizeof(button)/sizeof(button[0]); i++)
+  for(int i = 0; i < 17; i++)
   {
       if(i != a)
-        if(button[i] == true)
+        if(button[i] == 1)
           output = false;
       if(i == a)
-        if(button[i] != true)
+        if(button[i] != 1)
           output = false;
   }
   return output;
@@ -202,28 +227,4 @@ bool buttonXOR(int a, int b)
           output = false;
   }
   return output;
-}
-
-void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg)
-{
-  //Retrieve Axes:
-  for (size_t i = 0; i < sizeof(joyMsg->axes)/sizeof(joyMsg->axes[0]); i++) {
-    axes[i] = joyMsg->axes[i];
-  }
-
-  //Retrieve Buttons:
-  for (size_t i = 0; i < sizeof(joyMsg->buttons)/sizeof(joyMsg->buttons[0]); i++) {
-    button[i] = joyMsg->buttons[i];
-  }
-
-  //Four buttons for sound effects
-  for (size_t i = 0; i < 4; i++)
-  {
-    std::cout << "sound: " << i;
-    if(buttonXOR(i))
-    {
-      playMusic(i+1); //Music values from 1-4, as such, i+1 is used, as i is 0-3
-      std::cout << " is playing!" << std::endl;
-    }
-  }
 }
