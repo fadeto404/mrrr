@@ -27,7 +27,7 @@ geometry_msgs::Twist velMsg;
 kobuki_msgs::Sound soundMsg;
 
 //Current speed of robot, 0
-float linSpeed = 1;
+float linSpeed = 0.4;
 float angSpeed = 1;
 
 //used for adjusting speed, using ROS parameters. Acts as a multiplier (See the go-function)
