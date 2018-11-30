@@ -33,7 +33,7 @@ devel_isolated/
 CMakeLists.txt.user
 
 # clion stuff
-.idea/
+*/.idea/*
 
 srv/_*.py
 *.pcd
