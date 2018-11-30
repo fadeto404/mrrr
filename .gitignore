@@ -51,4 +51,4 @@ qtcreator-*
 CATKIN_IGNORE
 
 # Project specific ignores
-*.txt
+
