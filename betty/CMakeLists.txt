@@ -28,8 +28,3 @@ add_executable(dj src/dj.cpp)
 target_link_libraries(dj
   ${catkin_LIBRARIES}
 )
-
-add_executable(salesman src/salesman.cpp)
-target_link_libraries(salesman
-  ${catkin_LIBRARIES}
-)
