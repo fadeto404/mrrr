@@ -1,5 +1,5 @@
 /*
-
+    ADD a check for manual == true
 */
 #include <iostream>
 #include "ros/ros.h"
@@ -46,8 +46,8 @@ int main(int argc, char *argv[]) {
   ros::Duration(1.0).sleep();
 
   geometry_msgs::Twist velMsg;
-  int linSpeed = 0;
-  int angSpeed = 0;
+  float linSpeed = 0;
+  float angSpeed = 0;
 
   ros::Rate r(25);
   while(ros::ok())
