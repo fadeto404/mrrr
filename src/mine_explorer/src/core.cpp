@@ -5,26 +5,43 @@
 
 */
 #include <ros/ros.h>
+#include <ros/console.h>
 #include <string>
 
-void initParam(string name, int value);
 
+
+float initParamFloat(std::string name, float def);
+bool init();
 
 int main(int argc, char *argv[]) {
 
-  ros::init(arc, argv, "explorer_core");
+  ros::init(argc, argv, "explorer_core");
   ros::NodeHandle nh;
 
-  int linSpeedMult = initParamInt("linSpeedMult", 1);
+  if(!init())
+  {
+    ROS_DEBUG("Failed to init parameters! Exiting...");
+    ros::shutdown();
+    //Add functionality to exit main without doing anything more!
+  }
+  ROS_DEBUG("Initialized, proceeding...");
+
+
+
+  while(ros::ok())
+  {
+
+    ros::spinOnce();
+  }
 
 
   return 0;
 }
 
-
-int initParamInt(string name, int default)
+float initParamFloat(std::string name, float def)
 {
-  int param;
+  ros::NodeHandle nh;
+  float param;
   if(nh.hasParam(name))
   {
     nh.getParam(name, param);
@@ -32,7 +49,18 @@ int initParamInt(string name, int default)
   }
   else
   {
-    nh.setParam(name, default);
-    return default;
+    nh.setParam(name, def);
+    return def;
   }
+}
+
+bool init()
+{
+  bool success = true;
+
+  //Init speed parameters
+  float linSpeed = initParamFloat("/mine_explorer/linSpeed", 0.4);
+  float angSpeed = initParamFloat("/mine_explorer/angSpeed", 1);
+
+  return success;
 }
