@@ -32,7 +32,7 @@ void cliff_callback(const kobuki_msgs::CliffEvent::ConstPtr& cliffMsg);
 int main(int argc, char *argv[]) {
 
   //Basic initialization of ROS, node_name = "ps3_teleop"
-  ros::init(argc, argv, "ps3_teleop");
+  ros::init(argc, argv, "explorer_teleop");
   ros::NodeHandle nh;
 
   //Butt-load of publishers and subscribers:
@@ -103,5 +103,5 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg)
     }
   }
   //Add buttons for changing speed parameters here:
-  
+
 }
