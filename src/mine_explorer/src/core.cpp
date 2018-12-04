@@ -31,10 +31,12 @@ class GasHandle{
 
   void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg)
   {
+    //Only do stuff if a gas reading should be taken
     if (joyMsg->buttons[5]) {
-      geometry_msgs::TransformStamped transformStamped;
       ROS_INFO("Adding gas reading...");
 
+      //Get the robot position, as this will be the position of the gas reading:
+      geometry_msgs::TransformStamped transformStamped;
       tf2_ros::Buffer tfBuffer;
       tf2_ros::TransformListener tfListener(tfBuffer);
       try
@@ -45,50 +47,45 @@ class GasHandle{
       {
         ROS_WARN("%s", ex.what());
       }
-      //Get Turtlebot position, add random gas reading:
-      //addGas(transformStamped, rand() % 100 +1);
+
+      //Set the marker, with specific data to this reading
       marker.header.frame_id = "map";
       marker.header.stamp = ros::Time::now();
-      marker.ns = "gas_readings";
+      marker.ns = name + "_readings";
       marker.id = numOfReadings;
       numOfReadings++;
 
       marker.type = visualization_msgs::Marker::CYLINDER;
       marker.action = visualization_msgs::Marker::ADD;
 
-      //Position is point::
+      //Position is that of the robot
       marker.pose.position.x = transformStamped.transform.translation.x;
       marker.pose.position.y = transformStamped.transform.translation.y;
       marker.pose.position.z = transformStamped.transform.translation.z+0.1;
-      //Orientation is default:
+      //Rotation is origin:
       marker.pose.orientation.x = 0.0;
       marker.pose.orientation.y = 0.0;
       marker.pose.orientation.z = 0.0;
       marker.pose.orientation.w = 1.0;
 
-      // Set the scale of the marker -- 1x1x1 here means 1m on a side
+      // Set the scale of the marker, here it is 0.3m x 0.3m x 0.2m
       marker.scale.x = 0.3;
       marker.scale.y = 0.3;
       marker.scale.z = 0.2;
 
-      // Set the color -- be sure to set alpha to something non-zero!
-
+      // Calculating the color as a gradient between blue and red:
       float value = (rand() % 255);
-      float r = value/256;
-      float b = 1-r;
 
-    //  ROS_INFO("Color: %f, %f, %f",  value,r,b);
-      marker.color.r = r;
+      marker.color.r = value/256;;
       marker.color.g = 0;
-      marker.color.b = b;
+      marker.color.b = 1 - marker.color.r;
       marker.color.a = 1;
 
+      //Set lifetime to infinite, and push it into the MarkerArray
       marker.lifetime = ros::Duration();
-
-
       marker_array.markers.push_back(marker);
 
-      //New reading added, refresh rviz:
+      //New reading added, refresh rviz by publishing MarkerArray
       marker_pub.publish(marker_array);
     }
   }
@@ -97,16 +94,18 @@ public:
 
   GasHandle(std::string nameSet)
   {
-    marker_pub = nh.advertise<visualization_msgs::MarkerArray>(nameSet + "_markers", 1);
+    name = nameSet;
+    marker_pub = nh.advertise<visualization_msgs::MarkerArray>(name + "_markers", 1);
     joy_sub = nh.subscribe<sensor_msgs::Joy>("/joy", 100, &GasHandle::joy_callback, this);
     srand (time(NULL));
-    name = name;
   }
 };
 
-
+//function prototypes
 float initParamFloat(std::string name, float def);
 bool init();
+
+
 
 int main(int argc, char *argv[]) {
 
@@ -123,12 +122,15 @@ int main(int argc, char *argv[]) {
   }
   ROS_DEBUG("Initialized, proceeding...");
 
-
-
+  //Run loop at 50Hz:
+  ros::Rate r(50);
   while(ros::ok())
   {
-
+    //Process callback queue
     ros::spinOnce();
+    
+    //Loop at 50 Hz
+    r.sleep();
   }
 
   return 0;

@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
 
   //Butt-load of publishers and subscribers:
   cmd_vel_pub = nh.advertise<geometry_msgs::Twist>("/cmd_vel_mux/input/teleop", 1);
-  music_pub = nh.advertise<std_msgs::Int16>("/music", 2);
+  music_pub = nh.advertise<std_msgs::Int16>("/mine_explorer/sound", 2);
   joy_sub = nh.subscribe<sensor_msgs::Joy>("/joy", 1, joy_callback);
   bump_sub = nh.subscribe("/mobile_base/events/bumper", 1, bumper_callback);
   cliff_sub = nh.subscribe("/mobile_base/events/cliff", 5, cliff_callback);
@@ -89,7 +89,7 @@ void cliff_callback(const kobuki_msgs::CliffEvent::ConstPtr& cliffMsg)
 void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg)
 {
   //Retrieve Axes:
-  for (size_t i = 0; i < sizeof(joyMsg->axes)/sizeof(joyMsg->axes[0]); i++) {
+  for (size_t i = 0; i < 6; i++) {
     axes[i] = joyMsg->axes[i];
   }
 
@@ -102,4 +102,6 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg)
       std::cout << "sound: " << i << " is playing!" << std::endl;
     }
   }
+  //Add buttons for changing speed parameters here:
+  
 }
