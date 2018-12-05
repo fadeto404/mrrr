@@ -33,7 +33,7 @@ class GasHandle{
   {
     //Only do stuff if a gas reading should be taken
     if (joyMsg->buttons[5]) {
-      ROS_INFO("Adding gas reading...");
+      ROS_INFO_STREAM("Adding gas reading: " << name);
 
       //Get the robot position, as this will be the position of the gas reading:
       geometry_msgs::TransformStamped transformStamped;

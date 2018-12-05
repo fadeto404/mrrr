@@ -2,6 +2,6 @@
 <launch>
   <node name="teleop" ns="mine_explorer" pkg="mine_explorer" type="mine_explorer_teleop" output="screen" />
   <node name="joy_node" pkg="joy" type="joy_node" output="screen"/>
-  <node name="core" ns="mine_explore" pkg="mine_explorer" type="mine_explorer_core" output="screen"/>
+  <node name="core" ns="mine_explorer" pkg="mine_explorer" type="mine_explorer_core" output="screen"/>
   <node name="$(anon rviz)" pkg="rviz" type="rviz" args="-d $(find mine_explorer)/config/operator.rviz"/>
 </launch>
