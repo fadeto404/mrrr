@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
   ros::Duration(1.0).sleep();
 
   bool manual_control;
-  bool explorer_running;
+  bool explorer_running = false;
 
   ros::Rate r(10);
   while (ros::ok)
