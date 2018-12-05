@@ -1,5 +1,5 @@
 <launch>
   <include file="$(find turtlebot_bringup)/launch/minimal.launch" />
   <include file="$(find turtlebot_navigation)/launch/gmapping_demo.launch" />
-  <node pkg="mine_explorer" type="mine_explorer_sound" />
+  <node name="mine_explorer_sound" pkg="mine_explorer" type="mine_explorer_sound" />
 </launch>
