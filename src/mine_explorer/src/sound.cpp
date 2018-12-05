@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
 
 
 
-  music_sub = nh.subscribe<std_msgs::Int16>("mine_explorer_sound", 1, music_callback);
+  music_sub = nh.subscribe<std_msgs::Int16>("sound", 1, music_callback);
   ros::Duration(1.0).sleep();
   std::cout << "Done with setup, waiting for music request" << std::endl;
 

@@ -110,7 +110,7 @@ bool init();
 
 int main(int argc, char *argv[]) {
 
-  ros::init(argc, argv, "mine_explorer_core");
+  ros::init(argc, argv, "core");
   ros::NodeHandle nh;
   GasHandle oxygen("oxygen");
   GasHandle co("carbon_monoxide");

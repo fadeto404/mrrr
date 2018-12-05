@@ -32,7 +32,7 @@ void cliff_callback(const kobuki_msgs::CliffEvent::ConstPtr& cliffMsg);
 int main(int argc, char *argv[]) {
 
   //Basic initialization of ROS, node_name = "ps3_teleop"
-  ros::init(argc, argv, "mine_explorer_teleop");
+  ros::init(argc, argv, "teleop");
   ros::NodeHandle nh;
 
   //Butt-load of publishers and subscribers:
