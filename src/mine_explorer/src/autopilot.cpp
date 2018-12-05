@@ -16,19 +16,25 @@ void start_exploration();
 
 int main(int argc, char *argv[])
 {
-  ros::init(argc, argv, "explorer_autopilot");
+  ros::init(argc, argv, "mine_explorer_autopilot");
   ros::NodeHandle autopilot_nh;
   ros::Duration(1.0).sleep();
 
   bool manual_control;
+  bool explorer_running = false;
 
   ros::Rate r(10);
   while (ros::ok)
   {
     autopilot_nh.getParam("/mine_explorer/control_mode", manual_control);
-    if (!manual_control){
+    if (manual_control and explorer_running){
+      explorer_running = false;
+    }
+    if (!manual_control and !explorer_running){
+      explorer_running = true;
       start_exploration();
     }
+
 
     ros::spinOnce();
     r.sleep();
@@ -44,41 +50,3 @@ void start_exploration(){
   ros::spinOnce();
   return;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*class Autopilot
-{
-public:
-  Autopilot(){
-    explore::Explore explorer;
-  };
-};*/
-
-
-/*
-explore::Explore autopilot::Autopilot()
-{
-  explore::Explore() explorer;
-};
-
-void autopilot::explore_mine() {
-  explorer->start();
-}
-
-void autopilot::stop_exploring(){
-  explorer->stop();
-}
-
-*/
