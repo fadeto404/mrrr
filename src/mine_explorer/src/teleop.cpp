@@ -107,7 +107,12 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg)
 
     bool manual_control;
     nh.getParam("/mine_explorer/control_mode", manual_control);
-    manual_control = !manual_control; // Flip the control mode value
+    if (manual_control){
+      manual_control = false;
+    }
+    else if (!manual_control){
+      manual_control = true;
+    }
     nh.setParam("/mine_explorer/control_mode", manual_control);
   }
 

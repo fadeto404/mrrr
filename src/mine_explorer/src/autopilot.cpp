@@ -16,7 +16,7 @@ void start_exploration();
 
 int main(int argc, char *argv[])
 {
-  ros::init(argc, argv, "mine_explorer_autopilot");
+  ros::init(argc, argv, "autopilot");
   ros::NodeHandle autopilot_nh;
   ros::Duration(1.0).sleep();
 
