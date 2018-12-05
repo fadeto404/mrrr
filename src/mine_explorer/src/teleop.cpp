@@ -57,7 +57,6 @@ int main(int argc, char *argv[]) {
 
     //Set speed, linear and angular, publish
     velMsg.linear.x = axes[1]*linSpeed;
-    std::cout << "Axes[1]: " << axes[1] << ", linspeed: " << linSpeed << std::endl;
     velMsg.angular.z = axes[0]*angSpeed;
     cmd_vel_pub.publish(velMsg);
     ros::spinOnce();

@@ -7,6 +7,7 @@
 #include <ros/ros.h>
 #include <ros/console.h>
 #include <string.h>
+#include <iostream>
 
 //Used by GasHandle::
 #include <sensor_msgs/Joy.h>
@@ -116,19 +117,18 @@ int main(int argc, char *argv[]) {
 
   if(!init())
   {
-    ROS_DEBUG("Failed to init parameters! Exiting...");
+    ROS_INFO("Failed to init parameters! Exiting...");
     ros::shutdown();
     //Add functionality to exit main without doing anything more!
   }
-  ROS_DEBUG("Initialized, proceeding...");
-
+  ROS_INFO("Initialized, proceeding...");
   //Run loop at 50Hz:
   ros::Rate r(50);
   while(ros::ok())
   {
     //Process callback queue
     ros::spinOnce();
-    
+
     //Loop at 50 Hz
     r.sleep();
   }
