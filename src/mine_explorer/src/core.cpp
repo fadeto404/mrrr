@@ -183,5 +183,3 @@ bool init()
 
   return success;
 }
-
-

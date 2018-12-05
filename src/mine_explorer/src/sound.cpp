@@ -8,13 +8,13 @@
 void music_callback(const std_msgs::Int16::ConstPtr& choice);
 
 int main(int argc, char *argv[]) {
-  ros::init(argc,  argv, "mine_explorer_sound");
+  ros::init(argc,  argv, "mine_explorer/sound");
   ros::NodeHandle nh;
   ros::Subscriber music_sub;
 
 
 
-  music_sub = nh.subscribe<std_msgs::Int16>("/mine_explorer/sound", 1, music_callback);
+  music_sub = nh.subscribe<std_msgs::Int16>("/mine_explorer_sound", 1, music_callback);
   ros::Duration(1.0).sleep();
   std::cout << "Done with setup, waiting for music request" << std::endl;
 
