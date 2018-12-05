@@ -32,7 +32,7 @@ void cliff_callback(const kobuki_msgs::CliffEvent::ConstPtr& cliffMsg);
 int main(int argc, char *argv[]) {
 
   //Basic initialization of ROS, node_name = "ps3_teleop"
-  ros::init(argc, argv, "ps3_teleop");
+  ros::init(argc, argv, "explorer_teleop");
   ros::NodeHandle nh;
 
   //Butt-load of publishers and subscribers:
@@ -57,7 +57,6 @@ int main(int argc, char *argv[]) {
 
     //Set speed, linear and angular, publish
     velMsg.linear.x = axes[1]*linSpeed;
-    std::cout << "Axes[1]: " << axes[1] << ", linspeed: " << linSpeed << std::endl;
     velMsg.angular.z = axes[0]*angSpeed;
     cmd_vel_pub.publish(velMsg);
     ros::spinOnce();
@@ -103,5 +102,5 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg)
     }
   }
   //Add buttons for changing speed parameters here:
-  
+
 }
