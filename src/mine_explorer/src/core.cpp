@@ -3,7 +3,6 @@
   Handles decision making and outputs to GUI
   Handles Gas sensor readings
 */
-
 #include <ros/ros.h>
 #include <ros/console.h>
 #include <string.h>
@@ -104,6 +103,7 @@ public:
 
 //function prototypes
 float initParamFloat(std::string name, float def);
+bool initParamBool(std::string name, bool def);
 bool init();
 
 
@@ -136,6 +136,7 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 
+// Sets a parameter of type float given the name and value of it
 float initParamFloat(std::string name, float def)
 {
   ros::NodeHandle nh;
@@ -152,6 +153,24 @@ float initParamFloat(std::string name, float def)
   }
 }
 
+// Sets a parameter of type bool given the name and value of it
+bool initParamBool(std::string name, bool def)
+{
+  ros::NodeHandle nh;
+  bool param;
+  if (nh.hasParam(name))
+  {
+    nh.getParam(name, param);
+    return param;
+  }
+  else
+  {
+    nh.setParam(name, def);
+    return def;
+  }
+}
+
+// Initialises parameters
 bool init()
 {
   bool success = true;
@@ -160,5 +179,9 @@ bool init()
   float linSpeed = initParamFloat("/mine_explorer/linSpeed", 0.4);
   float angSpeed = initParamFloat("/mine_explorer/angSpeed", 1);
 
+  bool manual_control = initParamBool("/mine_explorer/control_mode", true);
+
   return success;
 }
+
+

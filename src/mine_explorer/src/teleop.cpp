@@ -2,12 +2,12 @@
     ADD a check for manual == true
 */
 #include <iostream>
-#include "ros/ros.h"
-#include "geometry_msgs/Twist.h"
+#include <ros/ros.h>
+#include <geometry_msgs/Twist.h>
 #include <sensor_msgs/Joy.h>
 #include <std_msgs/Int16.h>
-#include "kobuki_msgs/BumperEvent.h"
-#include "kobuki_msgs/CliffEvent.h"
+#include <kobuki_msgs/BumperEvent.h>
+#include <kobuki_msgs/CliffEvent.h>
 
 
 //Publishers,subscribers and their messages:
@@ -101,6 +101,17 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg)
       std::cout << "sound: " << i << " is playing!" << std::endl;
     }
   }
+
+  if (joyMsg->buttons[8])
+  {
+    ros::NodeHandle nh;
+
+    bool manual_control;
+    nh.getParam("/mine_explorer/control_mode", manual_control);
+    manual_control = !manual_control; // Flip the control mode value
+    nh.setParam("/mine_explorer/control_mode", manual_control);
+  }
+
   //Add buttons for changing speed parameters here:
 
 }

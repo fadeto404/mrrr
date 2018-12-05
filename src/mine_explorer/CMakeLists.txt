@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(mine_explorer)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -13,6 +13,16 @@ find_package(catkin REQUIRED COMPONENTS
   genmsg
   roscpp
   tf2_ros
+  tf
+  costmap_2d
+  geometry_msgs
+  map_msgs
+  move_base_msgs
+  nav_msgs
+  std_msgs
+  tf
+  visualization_msgs
+  explore_lite
 )
 
 ## System dependencies are found with CMake's conventions
@@ -120,6 +130,7 @@ catkin_package(
 include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
+  include
 )
 
 ## Declare a C++ library
@@ -139,7 +150,7 @@ include_directories(
   add_executable(${PROJECT_NAME}_core src/core.cpp)
   add_executable(${PROJECT_NAME}_sound src/sound.cpp)
   add_executable(${PROJECT_NAME}_teleop src/teleop.cpp)
-
+  add_executable(${PROJECT_NAME}_autopilot src/autopilot.cpp)
 
 
 ## Rename C++ executable without prefix
@@ -160,6 +171,7 @@ include_directories(
 target_link_libraries(${PROJECT_NAME}_core ${catkin_LIBRARIES})
 target_link_libraries(${PROJECT_NAME}_sound ${catkin_LIBRARIES})
 target_link_libraries(${PROJECT_NAME}_teleop ${catkin_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_autopilot ${catkin_LIBRARIES})
 
 
 #############
