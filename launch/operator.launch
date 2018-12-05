@@ -1,6 +1,0 @@
-
-<launch>
-  <node name="mine_explorer_teleop" pkg="mine_explorer" type="mine_explorer_teleop" />
-  <node name="joy_node" pkg="joy" type="joy_node" />
-  <node name="mine_explorer_core" pkg="mine_explorer" type="mine_explorer_core" output="screen"/>
-</launch>
