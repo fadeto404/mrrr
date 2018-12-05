@@ -96,7 +96,7 @@ public:
   GasHandle(std::string nameSet)
   {
     name = nameSet;
-    marker_pub = nh.advertise<visualization_msgs::MarkerArray>(name + "_markers", 1);
+    marker_pub = nh.advertise<visualization_msgs::MarkerArray>("mine_explorer_" + name + "_markers", 1);
     joy_sub = nh.subscribe<sensor_msgs::Joy>("/joy", 100, &GasHandle::joy_callback, this);
     srand (time(NULL));
   }
@@ -110,7 +110,7 @@ bool init();
 
 int main(int argc, char *argv[]) {
 
-  ros::init(argc, argv, "explorer_core");
+  ros::init(argc, argv, "mine_explorer_core");
   ros::NodeHandle nh;
   GasHandle oxygen("oxygen");
   GasHandle co("carbon_monoxide");

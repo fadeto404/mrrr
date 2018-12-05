@@ -32,7 +32,7 @@ void cliff_callback(const kobuki_msgs::CliffEvent::ConstPtr& cliffMsg);
 int main(int argc, char *argv[]) {
 
   //Basic initialization of ROS, node_name = "ps3_teleop"
-  ros::init(argc, argv, "explorer_teleop");
+  ros::init(argc, argv, "mine_explorer_teleop");
   ros::NodeHandle nh;
 
   //Butt-load of publishers and subscribers:
@@ -54,7 +54,6 @@ int main(int argc, char *argv[]) {
   {
     nh.getParam("/mine_explorer/angSpeed", angSpeed);
     nh.getParam("/mine_explorer/linSpeed", linSpeed);
-
     //Set speed, linear and angular, publish
     velMsg.linear.x = axes[1]*linSpeed;
     velMsg.angular.z = axes[0]*angSpeed;

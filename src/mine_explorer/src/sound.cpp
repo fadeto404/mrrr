@@ -8,9 +8,13 @@
 void music_callback(const std_msgs::Int16::ConstPtr& choice);
 
 int main(int argc, char *argv[]) {
-  ros::init(argc,  argv, "explorer_sound");
+  ros::init(argc,  argv, "mine_explorer_sound");
   ros::NodeHandle nh;
-  ros::Subscriber music_sub = nh.subscribe<std_msgs::Int16>("/mine_explorer/sound", 1, music_callback);
+  ros::Subscriber music_sub;
+
+
+
+  music_sub = nh.subscribe<std_msgs::Int16>("/mine_explorer/sound", 1, music_callback);
   ros::Duration(1.0).sleep();
   std::cout << "Done with setup, waiting for music request" << std::endl;
 
@@ -31,6 +35,7 @@ void music_callback(const std_msgs::Int16::ConstPtr& choice)
     case 1:
     std::cout << "playing music 1!" << std::endl;
     //system("cvlc --play-and-exit /home/c2-19/ros_ws/src/mrrr/betty/sounds/Depression.mp3");
+    played = true;
     break;
 
     default:
