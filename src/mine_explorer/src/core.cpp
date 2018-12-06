@@ -7,6 +7,8 @@
 #include <ros/console.h>
 #include <string.h>
 #include <iostream>
+#include <kobuki_msgs/ButtonEvent.h>
+
 
 //Used by GasHandle::
 #include <sensor_msgs/Joy.h>
@@ -106,12 +108,19 @@ float initParamFloat(std::string name, float def);
 bool initParamBool(std::string name, bool def);
 bool init();
 
-
+void button_callback(const kobuki_msgs::ButtonEvent::ConstPtr& input)
+{
+  if(input->state)
+  {
+    ROS_INFO("Button %i was pressed!", input->button);
+  }
+}
 
 int main(int argc, char *argv[]) {
 
   ros::init(argc, argv, "core");
   ros::NodeHandle nh;
+  ros::Subscriber button_sub = nh.subscribe<kobuki_msgs::ButtonEvent>("/mobile_base/events/button", 5, button_callback);
   GasHandle oxygen("oxygen");
   GasHandle co("carbon_monoxide");
 

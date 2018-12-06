@@ -6,16 +6,12 @@
 #include <geometry_msgs/Twist.h>
 #include <sensor_msgs/Joy.h>
 #include <std_msgs/Int16.h>
-#include <kobuki_msgs/BumperEvent.h>
-#include <kobuki_msgs/CliffEvent.h>
 
 
 //Publishers,subscribers and their messages:
 ros::Publisher cmd_vel_pub; //Velocity
-ros::Publisher music_pub; //Turtlebot PC music
+ros::Publisher message_pub; //Turtlebot PC music
 ros::Subscriber joy_sub;  //Joystick
-ros::Subscriber bump_sub; //Bumper
-ros::Subscriber cliff_sub; //Cliff
 
 
 //Axes of controller
@@ -23,10 +19,8 @@ float axes[6];
 
 
 //Prototype functions, defined below main
-void playMusic(int choice);
+void playMessage(int choice);
 void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg);
-void bumper_callback(const kobuki_msgs::BumperEvent::ConstPtr& bumpMsg);
-void cliff_callback(const kobuki_msgs::CliffEvent::ConstPtr& cliffMsg);
 
 
 int main(int argc, char *argv[]) {
@@ -37,10 +31,8 @@ int main(int argc, char *argv[]) {
 
   //Butt-load of publishers and subscribers:
   cmd_vel_pub = nh.advertise<geometry_msgs::Twist>("/cmd_vel_mux/input/teleop", 1);
-  music_pub = nh.advertise<std_msgs::Int16>("/mine_explorer/sound", 2);
+  message_pub = nh.advertise<std_msgs::Int16>("/mine_explorer/sound_message", 2);
   joy_sub = nh.subscribe<sensor_msgs::Joy>("/joy", 1, joy_callback);
-  bump_sub = nh.subscribe("/mobile_base/events/bumper", 1, bumper_callback);
-  cliff_sub = nh.subscribe("/mobile_base/events/cliff", 5, cliff_callback);
   ros::Duration(1.0).sleep();
 
   geometry_msgs::Twist velMsg;
@@ -69,21 +61,11 @@ int main(int argc, char *argv[]) {
 
 
 
-void playMusic(int choice)
+void playMessage(int choice)
 {
   std_msgs::Int16 output;
   output.data = choice;
-  music_pub.publish(output);
-}
-
-void bumper_callback(const kobuki_msgs::BumperEvent::ConstPtr& bumpMsg)
-{
-
-}
-
-void cliff_callback(const kobuki_msgs::CliffEvent::ConstPtr& cliffMsg)
-{
-
+  message_pub.publish(output);
 }
 
 void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg)
@@ -98,7 +80,7 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg)
   {
     if(joyMsg->buttons[i])
     {
-      playMusic(i+1); //Music values from 1-4, as such, i+1 is used, as i is 0-3
+      playMessage(i+1); //Music values from 1-4, as such, i+1 is used, as i is 0-3
       std::cout << "sound: " << i << " is playing!" << std::endl;
     }
   }
