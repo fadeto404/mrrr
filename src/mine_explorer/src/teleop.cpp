@@ -41,23 +41,25 @@ int main(int argc, char *argv[]) {
   joy_sub = nh.subscribe<sensor_msgs::Joy>("/joy", 1, joy_callback);
   bump_sub = nh.subscribe("/mobile_base/events/bumper", 1, bumper_callback);
   cliff_sub = nh.subscribe("/mobile_base/events/cliff", 5, cliff_callback);
-
-
   ros::Duration(1.0).sleep();
 
   geometry_msgs::Twist velMsg;
   float linSpeed = 0;
   float angSpeed = 0;
-
+  bool manual_control = false;
   ros::Rate r(25);
   while(ros::ok())
   {
-    nh.getParam("/mine_explorer/angSpeed", angSpeed);
-    nh.getParam("/mine_explorer/linSpeed", linSpeed);
-    //Set speed, linear and angular, publish
-    velMsg.linear.x = axes[1]*linSpeed;
-    velMsg.angular.z = axes[0]*angSpeed;
-    cmd_vel_pub.publish(velMsg);
+    nh.getParam("/mine_explorer/control_mode", manual_control);
+    if(manual_control)
+    {
+      nh.getParam("/mine_explorer/angSpeed", angSpeed);
+      nh.getParam("/mine_explorer/linSpeed", linSpeed);
+      //Set speed, linear and angular, publish
+      velMsg.linear.x = axes[1]*linSpeed;
+      velMsg.angular.z = axes[0]*angSpeed;
+      cmd_vel_pub.publish(velMsg);
+    }
     ros::spinOnce();
     r.sleep();
   }
@@ -107,12 +109,11 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg)
 
     bool manual_control;
     nh.getParam("/mine_explorer/control_mode", manual_control);
-    if (manual_control){
+    if (manual_control)
       manual_control = false;
-    }
-    else if (!manual_control){
+    else
       manual_control = true;
-    }
+
     nh.setParam("/mine_explorer/control_mode", manual_control);
   }
 
