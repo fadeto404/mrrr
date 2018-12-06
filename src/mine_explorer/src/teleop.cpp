@@ -7,6 +7,14 @@
 #include <sensor_msgs/Joy.h>
 #include <std_msgs/Int16.h>
 
+//goHome:
+#include <move_base_msgs/MoveBaseAction.h>
+#include <actionlib/client/simple_action_client.h>
+typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
+#include <geometry_msgs/PointStamped.h>
+#include <geometry_msgs/TransformStamped.h>
+#include <tf2_ros/transform_listener.h>
+#include <tf2/utils.h>
 
 //Publishers,subscribers and their messages:
 ros::Publisher cmd_vel_pub; //Velocity
@@ -22,6 +30,47 @@ float axes[6];
 void playMessage(int choice);
 void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg);
 
+move_base_msgs::MoveBaseGoal homeGoal;
+void goHome(move_base_msgs::MoveBaseGoal goal)
+{
+  ros::NodeHandle nh;
+  nh.setParam("/mine_explorer/manual_control", false);
+
+  MoveBaseClient ac("move_base", true);
+  while(!ac.waitForServer(ros::Duration(5.0))){
+    ROS_INFO("Setting up the action_server");
+  }
+  ROS_INFO("Going home!");
+  ac.sendGoal(goal);
+
+  ac.waitForResult();
+  if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
+    ROS_INFO("Bot has returned home");
+}
+move_base_msgs::MoveBaseGoal setHomeGoal()
+{
+  geometry_msgs::TransformStamped transformStamped;
+  tf2_ros::Buffer tfBuffer;
+  tf2_ros::TransformListener tfListener(tfBuffer);
+  try
+  {
+    transformStamped = tfBuffer.lookupTransform("map", "base_footprint", ros::Time(0), ros::Duration(5)); //Original: lookupTransform("base_footprint", "map",...
+  }
+  catch (tf2::TransformException &ex)
+  {
+    ROS_WARN("%s", ex.what());
+  }
+  move_base_msgs::MoveBaseGoal goal;
+
+  goal.target_pose.header.frame_id = "base_link";
+  goal.target_pose.header.stamp = ros::Time::now();
+
+  goal.target_pose.pose.position.x = transformStamped.transform.translation.x;
+  goal.target_pose.pose.position.y = transformStamped.transform.translation.y;
+  goal.target_pose.pose.orientation.w = 1.0;
+
+  return goal;
+}
 
 int main(int argc, char *argv[]) {
 
@@ -34,6 +83,9 @@ int main(int argc, char *argv[]) {
   message_pub = nh.advertise<std_msgs::Int16>("/mine_explorer/sound_message", 2);
   joy_sub = nh.subscribe<sensor_msgs::Joy>("/joy", 1, joy_callback);
   ros::Duration(1.0).sleep();
+
+  //Get home position at startup:
+  homeGoal = setHomeGoal();
 
   geometry_msgs::Twist velMsg;
   float linSpeed = 0;
@@ -98,6 +150,8 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg)
 
     nh.setParam("/mine_explorer/control_mode", manual_control);
   }
+  if(joyMsg->buttons[9])
+    goHome(homeGoal);
 
   //Add buttons for changing speed parameters here:
 

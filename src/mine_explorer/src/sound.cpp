@@ -8,10 +8,10 @@
 void message_callback(const std_msgs::Int16::ConstPtr& choice)
 {
   bool played = false;
+  ROS_INFO("playing message %i!", choice->data);
   switch (choice->data)
   {
     case 1:
-    std::cout << "playing message 1!" << std::endl;
     //system("cvlc --play-and-exit /home/c2-19/ros_ws/src/mrrr/betty/sounds/Depression.mp3");
     played = true;
     break;
@@ -19,9 +19,8 @@ void message_callback(const std_msgs::Int16::ConstPtr& choice)
     default:
     break;
   }
-
   if(!played)
-    std::cout << "Couldn't play message: " << choice->data << ", check error message above" << std::endl;
+    ROS_WARN("Couldn't play message: %i, check error message above", choice->data);
 }
 
 int main(int argc, char *argv[]) {

@@ -22,7 +22,8 @@
 #include <time.h>
 
 
-class GasHandle{
+class GasHandle
+{
   int numOfReadings = 0;
   std::string name;
   visualization_msgs::Marker marker;
@@ -103,48 +104,6 @@ public:
   }
 };
 
-//function prototypes
-float initParamFloat(std::string name, float def);
-bool initParamBool(std::string name, bool def);
-bool init();
-
-void button_callback(const kobuki_msgs::ButtonEvent::ConstPtr& input)
-{
-  if(input->state)
-  {
-    ROS_INFO("Button %i was pressed!", input->button);
-  }
-}
-
-int main(int argc, char *argv[]) {
-
-  ros::init(argc, argv, "core");
-  ros::NodeHandle nh;
-  ros::Subscriber button_sub = nh.subscribe<kobuki_msgs::ButtonEvent>("/mobile_base/events/button", 5, button_callback);
-  GasHandle oxygen("oxygen");
-  GasHandle co("carbon_monoxide");
-
-  if(!init())
-  {
-    ROS_INFO("Failed to init parameters! Exiting...");
-    ros::shutdown();
-    //Add functionality to exit main without doing anything more!
-  }
-  ROS_INFO("Initialized, proceeding...");
-  //Run loop at 50Hz:
-  ros::Rate r(50);
-  while(ros::ok())
-  {
-    //Process callback queue
-    ros::spinOnce();
-
-    //Loop at 50 Hz
-    r.sleep();
-  }
-
-  return 0;
-}
-
 // Sets a parameter of type float given the name and value of it
 float initParamFloat(std::string name, float def)
 {
@@ -191,4 +150,42 @@ bool init()
   bool manual_control = initParamBool("/mine_explorer/control_mode", true);
 
   return success;
+}
+
+
+void button_callback(const kobuki_msgs::ButtonEvent::ConstPtr& input)
+{
+  if(input->state)
+  {
+    ROS_INFO("Button %i was pressed!", input->button);
+  }
+}
+
+int main(int argc, char *argv[])
+{
+  ros::init(argc, argv, "core");
+  ros::NodeHandle nh;
+  ros::Subscriber button_sub = nh.subscribe<kobuki_msgs::ButtonEvent>("/mobile_base/events/button", 5, button_callback);
+  GasHandle oxygen("oxygen");
+  GasHandle co("carbon_monoxide");
+
+  if(!init())
+  {
+    ROS_INFO("Failed to init parameters! Exiting...");
+    ros::shutdown();
+    //Add functionality to exit main without doing anything more!
+  }
+  ROS_INFO("Initialized, proceeding...");
+  //Run loop at 50Hz:
+  ros::Rate r(50);
+  while(ros::ok())
+  {
+    //Process callback queue
+    ros::spinOnce();
+
+    //Loop at 50 Hz
+    r.sleep();
+  }
+
+  return 0;
 }
