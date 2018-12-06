@@ -151,6 +151,7 @@ include_directories(
   add_executable(${PROJECT_NAME}_sound src/sound.cpp)
   add_executable(${PROJECT_NAME}_teleop src/teleop.cpp)
   add_executable(${PROJECT_NAME}_autopilot src/autopilot.cpp)
+  add_executable(${PROJECT_NAME}_test src/test.cpp)
 
 
 ## Rename C++ executable without prefix
@@ -172,6 +173,7 @@ target_link_libraries(${PROJECT_NAME}_core ${catkin_LIBRARIES})
 target_link_libraries(${PROJECT_NAME}_sound ${catkin_LIBRARIES})
 target_link_libraries(${PROJECT_NAME}_teleop ${catkin_LIBRARIES})
 target_link_libraries(${PROJECT_NAME}_autopilot ${catkin_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_test ${catkin_LIBRARIES})
 
 
 #############

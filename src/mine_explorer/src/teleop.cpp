@@ -1,5 +1,4 @@
 /*
-    ADD a check for manual == true
 */
 #include <iostream>
 #include <ros/ros.h>
@@ -10,7 +9,8 @@
 //goHome:
 #include <move_base_msgs/MoveBaseAction.h>
 #include <actionlib/client/simple_action_client.h>
-typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
+#include <actionlib/client/simple_client_goal_state.h>
+
 #include <geometry_msgs/PointStamped.h>
 #include <geometry_msgs/TransformStamped.h>
 #include <tf2_ros/transform_listener.h>
@@ -35,18 +35,27 @@ void goHome(move_base_msgs::MoveBaseGoal goal)
 {
   ros::NodeHandle nh;
   nh.setParam("/mine_explorer/manual_control", false);
+  ROS_INFO("Going home!");
 
-  MoveBaseClient ac("move_base", true);
+  actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> client("move_base", true);
+  ros::Duration(5.0).sleep();
+  client.sendGoal(goal);
+
+  /*
+  actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> ac("move_base", true);
+
   while(!ac.waitForServer(ros::Duration(5.0))){
     ROS_INFO("Setting up the action_server");
   }
-  ROS_INFO("Going home!");
+
   ac.sendGoal(goal);
 
   ac.waitForResult();
   if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
     ROS_INFO("Bot has returned home");
+  */
 }
+
 move_base_msgs::MoveBaseGoal setHomeGoal()
 {
   geometry_msgs::TransformStamped transformStamped;
