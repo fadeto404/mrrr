@@ -141,8 +141,8 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg)
   {
     if(joyMsg->buttons[i])
     {
-      playMessage(i+1); //Music values from 1-4, as such, i+1 is used, as i is 0-3
-      std::cout << "sound: " << i << " is playing!" << std::endl;
+      playMessage(i);
+      std::cout << "sound message: " << i << " is playing!" << std::endl;
     }
   }
 

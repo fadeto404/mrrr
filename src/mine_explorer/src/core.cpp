@@ -101,6 +101,7 @@ public:
     marker_pub = nh.advertise<visualization_msgs::MarkerArray>("mine_explorer_" + name + "_markers", 1);
     joy_sub = nh.subscribe<sensor_msgs::Joy>("/joy", 100, &GasHandle::joy_callback, this);
     srand (time(NULL));
+    ROS_INFO_STREAM("Tracking gas of type: " << name);
   }
 };
 
