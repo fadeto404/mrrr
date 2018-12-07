@@ -133,7 +133,7 @@ void speedChange(std::string param, float value, ros::NodeHandle nh)
 {
   float speed;
   nh.getParam(param, speed);
-  speed = speed + value;
+  speed += value;
   nh.setParam(param, speed);
   ROS_INFO_STREAM("Speed changed, " << param << ": " << speed + value);
 }

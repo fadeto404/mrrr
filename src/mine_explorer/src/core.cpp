@@ -71,10 +71,7 @@ class GasHandle
       marker.pose.orientation.z = 0.0;
       marker.pose.orientation.w = 1.0;
 
-      // Set the scale of the marker, here it is 0.3m x 0.3m x 0.2m
-      marker.scale.x = 0.3;
-      marker.scale.y = 0.3;
-      marker.scale.z = 0.2;
+
 
       // Calculating the color as a gradient between blue and red:
       float value = (rand() % 255);
@@ -83,6 +80,11 @@ class GasHandle
       marker.color.g = 0;
       marker.color.b = 1 - marker.color.r;
       marker.color.a = 1;
+
+      // Set the scale of the marker in meters
+      marker.scale.x = 0.3/256 * value;
+      marker.scale.y = 0.3/256 * value;
+      marker.scale.z = 0.2/256 * value;
 
       //Set lifetime to infinite, and push it into the MarkerArray
       marker.lifetime = ros::Duration();
@@ -99,7 +101,7 @@ public:
   {
     name = nameSet;
     marker_pub = nh.advertise<visualization_msgs::MarkerArray>("mine_explorer_" + name + "_markers", 1);
-    joy_sub = nh.subscribe<sensor_msgs::Joy>("/joy", 100, &GasHandle::joy_callback, this);
+    joy_sub = nh.subscribe<sensor_msgs::Joy>("/joy", 1, &GasHandle::joy_callback, this);
     srand (time(NULL));
     ROS_INFO_STREAM("Tracking gas of type: " << name);
   }
