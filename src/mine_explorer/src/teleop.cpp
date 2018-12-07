@@ -29,6 +29,7 @@ float axes[6];
 //Prototype functions, defined below main
 void playMessage(int choice);
 void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg);
+void speedChange(std::string param, float value, ros::NodeHandle nh);
 
 move_base_msgs::MoveBaseGoal homeGoal;
 void goHome(move_base_msgs::MoveBaseGoal goal)
@@ -121,7 +122,6 @@ int main(int argc, char *argv[]) {
 }
 
 
-
 void playMessage(int choice)
 {
   std_msgs::Int16 output;
@@ -129,8 +129,18 @@ void playMessage(int choice)
   message_pub.publish(output);
 }
 
+void speedChange(std::string param, float value, ros::NodeHandle nh)
+{
+  float speed;
+  nh.getParam(param, speed);
+  speed = speed + value;
+  nh.setParam(param, speed);
+  ROS_INFO_STREAM("Speed changed, " << param << ": " << speed + value);
+}
+
 void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg)
 {
+  ros::NodeHandle nh;
   //Retrieve Axes:
   for (size_t i = 0; i < 6; i++) {
     axes[i] = joyMsg->axes[i];
@@ -148,8 +158,6 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg)
 
   if (joyMsg->buttons[8])
   {
-    ros::NodeHandle nh;
-
     bool manual_control;
     nh.getParam("/mine_explorer/control_mode", manual_control);
     if (manual_control)
@@ -162,6 +170,19 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg)
   if(joyMsg->buttons[9])
     goHome(homeGoal);
 
-  //Add buttons for changing speed parameters here:
+  if(joyMsg->buttons[13])
+  {
+    speedChange("/mine_explorer/linSpeed", 0.1, nh);
+    speedChange("/mine_explorer/angSpeed", 0.2, nh);
+  }
 
+
+  if(joyMsg->buttons[14])
+  {
+    speedChange("/mine_explorer/linSpeed", -0.1, nh);
+    speedChange("/mine_explorer/angSpeed", -0.2, nh);
+  }
+
+
+  //Add buttons for changing speed parameters here:
 }
