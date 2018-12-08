@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   actionlib_msgs
   genmsg
   roscpp
+  rospy
   tf2_ros
   tf
   costmap_2d
@@ -32,7 +33,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
-# catkin_python_setup()
+catkin_python_setup()
 
 ################################################
 ## Declare ROS messages, services and actions ##
@@ -128,9 +129,8 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
-  ${catkin_INCLUDE_DIRS}
   include
+  ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -150,7 +150,6 @@ include_directories(
   add_executable(${PROJECT_NAME}_core src/core.cpp)
   add_executable(${PROJECT_NAME}_sound src/sound.cpp)
   add_executable(${PROJECT_NAME}_teleop src/teleop.cpp)
-  add_executable(${PROJECT_NAME}_autopilot src/autopilot.cpp)
   add_executable(${PROJECT_NAME}_test src/test.cpp)
 
 
@@ -172,7 +171,6 @@ include_directories(
 target_link_libraries(${PROJECT_NAME}_core ${catkin_LIBRARIES})
 target_link_libraries(${PROJECT_NAME}_sound ${catkin_LIBRARIES})
 target_link_libraries(${PROJECT_NAME}_teleop ${catkin_LIBRARIES})
-target_link_libraries(${PROJECT_NAME}_autopilot ${catkin_LIBRARIES})
 target_link_libraries(${PROJECT_NAME}_test ${catkin_LIBRARIES})
 
 
@@ -185,10 +183,10 @@ target_link_libraries(${PROJECT_NAME}_test ${catkin_LIBRARIES})
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
-# install(PROGRAMS
-#   scripts/my_python_script
-#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
+install(PROGRAMS
+  bin/autopilot
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 
 ## Mark executables and/or libraries for installation
 # install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_node

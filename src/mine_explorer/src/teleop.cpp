@@ -167,6 +167,7 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg)
 
     nh.setParam("/mine_explorer/control_mode", manual_control);
   }
+
   if(joyMsg->buttons[9])
     goHome(homeGoal);
 
@@ -176,13 +177,9 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg)
     speedChange("/mine_explorer/angSpeed", 0.2, nh);
   }
 
-
   if(joyMsg->buttons[14])
   {
     speedChange("/mine_explorer/linSpeed", -0.1, nh);
     speedChange("/mine_explorer/angSpeed", -0.2, nh);
   }
-
-
-  //Add buttons for changing speed parameters here:
 }
