@@ -156,7 +156,7 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg)
     }
   }
 
-  if (joyMsg->buttons[8])
+  if (joyMsg->buttons[9])
   {
     bool manual_control;
     nh.getParam("/mine_explorer/control_mode", manual_control);
