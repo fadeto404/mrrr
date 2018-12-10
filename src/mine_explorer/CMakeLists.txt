@@ -150,7 +150,6 @@ include_directories(
   add_executable(${PROJECT_NAME}_core src/core.cpp)
   add_executable(${PROJECT_NAME}_sound src/sound.cpp)
   add_executable(${PROJECT_NAME}_teleop src/teleop.cpp)
-  add_executable(${PROJECT_NAME}_test src/test.cpp)
 
 
 ## Rename C++ executable without prefix
@@ -171,7 +170,6 @@ include_directories(
 target_link_libraries(${PROJECT_NAME}_core ${catkin_LIBRARIES})
 target_link_libraries(${PROJECT_NAME}_sound ${catkin_LIBRARIES})
 target_link_libraries(${PROJECT_NAME}_teleop ${catkin_LIBRARIES})
-target_link_libraries(${PROJECT_NAME}_test ${catkin_LIBRARIES})
 
 
 #############

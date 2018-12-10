@@ -35,7 +35,7 @@ def main():
             task.shutdown()
             task = None
 
-        manual_control = rospy.get_param('/mine_explorer/control_mode')
+        manual_control = rospy.get_param('/mine_explorer/exploring')
 
     rospy.spin()
     rospy.loginfo('Shutting down autopilot node')

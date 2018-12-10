@@ -150,7 +150,9 @@ bool init()
   float linSpeed = initParamFloat("/mine_explorer/linSpeed", 0.4);
   float angSpeed = initParamFloat("/mine_explorer/angSpeed", 1);
 
-  bool manual_control = initParamBool("/mine_explorer/control_mode", true);
+  bool manual_control = initParamBool("/mine_explorer/manual_control", true);
+  bool exploring = initParamBool("/mine_explorer/exploring", false);
+
 
   return success;
 }
@@ -176,7 +178,6 @@ int main(int argc, char *argv[])
   {
     ROS_INFO("Failed to init parameters! Exiting...");
     ros::shutdown();
-    //Add functionality to exit main without doing anything more!
   }
   ROS_INFO("Initialized, proceeding...");
   //Run loop at 50Hz:
