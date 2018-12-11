@@ -100,9 +100,15 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg)
     bool manual_control;
     nh.getParam("/mine_explorer/manual_control", manual_control);
     if(manual_control)
+    {
       nh.setParam("/mine_explorer/manual_control", false);
+      ROS_INFO("manual_control = false");
+    }
     else
+    {
       nh.setParam("/mine_explorer/manual_control", true);
+      ROS_INFO("manual_control = true");
+    }
   }
   //Start button
   if (joyMsg->buttons[9])
@@ -113,11 +119,13 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr& joyMsg)
     {
       nh.setParam("/mine_explorer/exploring", false);
       nh.setParam("/mine_explorer/manual_control", true);
+      ROS_INFO("Exploring = false, manual_control = true");
     }
     else
     {
       nh.setParam("/mine_explorer/exploring", true);
       nh.setParam("/mine_explorer/manual_control", false);
+      ROS_INFO("Exploring = true, manual_control = false");
     }
 
   }
