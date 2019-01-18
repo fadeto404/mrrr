@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
 
   //Butt-load of publishers and subscribers:
   cmd_vel_pub = nh.advertise<geometry_msgs::Twist>("/cmd_vel_mux/input/teleop", 1);
-  message_pub = nh.advertise<std_msgs::Int16>("/mine_explorer/sound_message", 2);
+  message_pub = nh.advertise<std_msgs::Int16>("/mine_explorer/sound_message", 1);
   joy_sub = nh.subscribe<sensor_msgs::Joy>("/joy", 1, joy_callback);
   ros::Duration(1.0).sleep();
 
