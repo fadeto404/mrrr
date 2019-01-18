@@ -32,7 +32,7 @@ void message_callback(const std_msgs::Int16::ConstPtr& choice)
 int main(int argc, char *argv[]) {
   ros::init(argc,  argv, "communication");
   ros::NodeHandle nh;
-  ros::Subscriber message_sub = nh.subscribe<std_msgs::Int16>("/mine_explorer/sound_message", 5, message_callback);
+  ros::Subscriber message_sub = nh.subscribe<std_msgs::Int16>("/mine_explorer/sound_message", 1, message_callback);
   ros::Duration(1.0).sleep();
   ROS_INFO("Done with setup, waiting for message...");
 
